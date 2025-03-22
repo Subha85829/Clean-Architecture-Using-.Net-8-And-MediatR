@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MyCleanArchitectureApp.Core.Interfaces;
+using MyCleanArchitectureApp.Core.Options;
 using MyCleanArchitectureApp.Infrastructure.Data;
 using MyCleanArchitectureApp.Infrastructure.Repositories;
 
@@ -18,9 +21,9 @@ namespace MyCleanArchitectureApp.Infrastructure
 		/// <returns></returns>
 		public static IServiceCollection AddInfraDI(this IServiceCollection services)
 		{
-			services.AddDbContext<AppDbContext>(options =>
+			services.AddDbContext<AppDbContext>((provider, options) =>
 			{
-				options.UseSqlServer("Server = LAPTOP-4RAD5B8V\\SQLEXPRESS01; Database = TestCleanArchAPIDB; Trusted_Connection = True; TrustServerCertificate = True; MultipleActiveResultSets=true");
+				options.UseSqlServer(provider.GetRequiredService<IOptionsSnapshot<ConnectionStringOptions>>().Value.DefaultConnection);
 			});
 
 			// Registering the repositories

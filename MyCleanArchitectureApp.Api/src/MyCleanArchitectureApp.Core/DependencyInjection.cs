@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MyCleanArchitectureApp.Core.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +19,9 @@ namespace MyCleanArchitectureApp.Core
 		/// </summary>
 		/// <param name="services"></param>
 		/// <returns></returns>
-		public static IServiceCollection AddCoreDI(this IServiceCollection services)
+		public static IServiceCollection AddCoreDI(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.Configure<ConnectionStringOptions>(configuration.GetSection(ConnectionStringOptions.SectionName));
 			return services;
 		}
 	}
